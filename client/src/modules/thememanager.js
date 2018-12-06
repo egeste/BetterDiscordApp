@@ -40,7 +40,8 @@ export default class ThemeManager extends ContentManager {
                 paths: {
                     contentPath: paths.contentPath,
                     dirName: paths.dirName,
-                    mainPath: paths.mainPath
+                    mainPath: paths.mainPath,
+                    packagePath: paths.packagePath
                 }
             });
             if (instance.enabled) {

@@ -113,7 +113,8 @@ export default class extends ContentManager {
             paths: {
                 contentPath: paths.contentPath,
                 dirName: packed ? packed.packageName : paths.dirName,
-                mainPath: paths.mainPath
+                mainPath: paths.mainPath,
+                packagePath: paths.packagePath
             }
         });
 

@@ -251,6 +251,7 @@ export default class {
             }
 
             const contentPath = packed ? dirName.contentPath : path.join(this.contentPath, dirName);
+            const packagePath = packed ? dirName.packagePath : null;
 
             await FileUtils.directoryExists(contentPath);
 
@@ -309,7 +310,8 @@ export default class {
             const paths = {
                 contentPath,
                 dirName,
-                mainPath
+                mainPath,
+                packagePath
             };
 
             const content = await this.loadContent(paths, configs, readConfig.info, readConfig.main, readConfig.dependencies, readConfig.permissions, readConfig.mainExport, packed ? dirName : false);
@@ -351,6 +353,11 @@ export default class {
 
             if (!force)
                 await unload;
+
+            if (content.packed) {
+
+                return true;
+            }
 
             await FileUtils.recursiveDeleteDirectory(content.paths.contentPath);
             return true;
