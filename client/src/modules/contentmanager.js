@@ -354,8 +354,8 @@ export default class {
             if (!force)
                 await unload;
 
-            if (content.packed) {
-
+            if (content.packed && content.paths.packagePath) {
+                await FileUtils.deleteFile(content.paths.packagePath);
                 return true;
             }
 
