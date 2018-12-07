@@ -107,56 +107,11 @@ export default class PackageInstaller {
      * @param {String} remoteLocation Remote resource location
      */
     static async installRemotePackage(remoteLocation) {
-        let outputPath = null;
-
         try {
-
             const modalResult = await Modals.remoteInstallModal(remoteLocation).promise;
-            console.log(modalResult);
             await this.dragAndDropHandler(modalResult);
         } catch (err) {
             throw err;
-        }
-
-        return;
-        try {
-            const { hostname } = Object.assign(document.createElement('a'), { href: remoteLocation });
-            if (hostname !== 'api.github.com' && hostname !== 'secretbdapi') throw 'Invalid host!';
-
-            const options = {
-                uri: remoteLocation,
-                encoding: null,
-                headers: {
-                    'User-Agent': 'BetterDiscordClient',
-                    'Accept': 'application/octet-stream'
-                }
-            };
-
-            const response = await request.get(options);
-            outputPath = path.join(Globals.getPath('tmp'), Security.hash('sha256', response, 'hex'));
-            fs.writeFileSync(outputPath, response);
-
-            const config = JSON.parse(asar.extractFile(outputPath, 'config.json').toString());
-            const { info, main } = config;
-
-            let icon = null;
-            if (info.icon && info.icon_type) {
-                const extractIcon = asar.extractFile(outputPath, info.icon);
-                icon = `data:${info.icon_type};base64,${Utils.arrayBufferToBase64(extractIcon)}`;
-            }
-
-            const isPlugin = info.type && info.type === 'plugin' || main.endsWith('.js');
-
-            // Show install modal
-            const modalResult = await Modals.installModal(isPlugin ? 'plugin' : 'theme', config, filePath, icon).promise;
-
-        } catch (err) {
-            throw err;
-        } finally {
-            if (!outputPath) return;
-            rimraf(outputPath, err => {
-                if (err) console.log(err);
-            });
         }
     }
 

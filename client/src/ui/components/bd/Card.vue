@@ -37,7 +37,8 @@
 
 <script>
     // Imports
-    import { FileUtils, ClientLogger as Logger } from 'common';
+    import asar from 'asar';
+    import { Utils, FileUtils, ClientLogger as Logger } from 'common';
     import path from 'path';
     import { MiExtension } from '../common';
     import ContentAuthor from './ContentAuthor.vue';
@@ -58,9 +59,14 @@
             async getIconURL() {
                 if (!this.item.icon) return;
 
+                if (this.item.icon.substr(0, 5) === 'data:') {
+                    return `url(${this.item.icon})`;
+                }
+
                 try {
-                    if (this.item.icon.substr(0, 5) === 'data:') {
-                        return `url(${this.item.icon})`;
+                    if (this.item.packed) {
+                        const icon = asar.extractFile(this.item.paths.packagePath, this.item.icon);
+                        return `url(data:${this.item.info.icon_type || 'image/svg+xml'};base64,${Utils.arrayBufferToBase64(icon)})`;
                     }
 
                     const iconPath = path.join(this.item.contentPath, this.item.icon);
