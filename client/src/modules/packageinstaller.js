@@ -15,6 +15,8 @@ import Reflection from './reflection';
 import DiscordApi from './discordapi';
 import ThemeManager from './thememanager';
 
+const safeHosts = [ 'api.github.com', 'secretapi.betterdiscord.net' ];
+
 export default class PackageInstaller {
 
     /**
@@ -120,7 +122,7 @@ export default class PackageInstaller {
 
         try {
             const { hostname } = Object.assign(document.createElement('a'), { href: remoteLocation });
-            if (hostname !== 'api.github.com' && hostname !== 'secretbdapi') throw 'Invalid host!';
+            if (!safeHosts.includes(hostname)) throw `Unsafe host: ${hostname}`;
 
             const options = {
                 uri: remoteLocation,
@@ -156,10 +158,7 @@ export default class PackageInstaller {
 
         } catch (err) {
             throw err;
-        } finally {
-
         }
-
     }
 
     /**

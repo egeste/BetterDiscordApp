@@ -52,7 +52,7 @@
                 <MiError />
             </div>
             <div slot="footer" class="bd-installModalFooter bd-installModalErrMsg">
-                {{err.message}}
+                {{err.message || err}}
                 <span>Ctrl+Shift+I</span>
             </div>
         </template>

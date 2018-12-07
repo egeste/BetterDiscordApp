@@ -1,6 +1,16 @@
 <template>
-    <Modal class="bd-installModal" :headertext="modal.title" :closing="modal.closing" @close="modal.close" :noheader="true" :class="{'bd-err': !verifying && !verified, 'bd-installModalDone': installed, 'bd-installModalFail': err}">
-        <div v-if="loadingInfo" class="bd-spinnerContainer" slot="body">
+    <Modal class="bd-installModal" :headertext="modal.title" :closing="modal.closing" @close="modal.close" :noheader="true" :class="{'bd-err': err, 'bd-installModalFail': err}">
+        <template v-if="err">
+            <div slot="body" class="bd-installModalBody">
+                <h3>Something went wrong :(</h3>
+                <MiError />
+            </div>
+            <div slot="footer" class="bd-installModalFooter bd-installModalErrMsg">
+                {{err.message || err}}
+                <span>Ctrl+Shift+I</span>
+            </div>
+        </template>
+        <div v-else-if="loadingInfo" class="bd-spinnerContainer" slot="body">
             <span>Loading Remote Package</span>
             <div class="bd-spinner7"></div>
         </div>
@@ -16,10 +26,6 @@
         data() {
             return {
                 loadingInfo: true,
-                installing: false,
-                installed: false,
-                verifying: true,
-                alreadyInstalled: false,
                 upToDate: true,
                 allowUnsafe: Settings.getSetting('security', 'default', 'unsafe-content').value,
                 installed: false,
@@ -37,7 +43,7 @@
                     this.modal.confirm(info.outputPath);
                     this.modal.close();
                 } catch (err) {
-                    console.log(err);
+                    this.err = err;
                 }
             }
         },
