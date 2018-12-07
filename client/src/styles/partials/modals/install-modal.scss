@@ -84,6 +84,22 @@
                     }
                 }
             }
+
+            .bd-spinnerContainer {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                justify-content: center;
+
+                span {
+                    font-size: 20px;
+                    text-align: center;
+                }
+
+                .bd-spinner7 {
+                    align-self: center;
+                }
+            }
         }
 
         .bd-installModalFooter {

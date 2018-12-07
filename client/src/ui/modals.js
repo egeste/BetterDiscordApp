@@ -18,6 +18,7 @@ import SettingsModal from './components/bd/modals/SettingsModal.vue';
 import PermissionModal from './components/bd/modals/PermissionModal.vue';
 import InputModal from './components/bd/modals/InputModal.vue';
 import InstallModal from './components/bd/modals/InstallModal.vue';
+import RemoteInstallModal from './components/bd/modals/RemoteInstallModal.vue';
 
 let modals = 0;
 
@@ -202,6 +203,19 @@ export default class Modals {
             modal.beforeClose = () => reject();
         });
         return new Modal(modal, InstallModal);
+    }
+
+    static remoteInstallModal(remoteLocation) {
+        return this.add(this.createRemoteInstallModal(remoteLocation));
+    }
+
+    static createRemoteInstallModal(remoteLocation) {
+        const modal = { remoteLocation };
+        modal.promise = new Promise((resolve, reject) => {
+            modal.confirm = value => resolve(value);
+            modal.beforeClose = () => reject();
+        });
+        return new Modal(modal, RemoteInstallModal);
     }
 
     /**

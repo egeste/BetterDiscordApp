@@ -236,7 +236,7 @@ export default class {
 
     /**
      * Common loading procedure for loading content before passing it to the actual loader
-     * @param {any} dirName Base directory for content
+     * @param {any} dirName Base directory for unpacked content | info about packed content
      * @param {any} reload Is content being reloaded
      * @param {any} index Index of content in {localContent}
      */
