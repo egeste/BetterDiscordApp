@@ -15,7 +15,7 @@
             <Button v-if="devmode && !plugin.packed" v-tooltip="'Package Plugin'" @click="package"><MiBoxDownload size="18"/></Button>
             <Button v-tooltip="'Settings (shift + click to open settings without cloning the set)'" v-if="plugin.hasSettings" @click="$emit('show-settings', $event.shiftKey)"><MiSettings size="18" /></Button>
             <Button v-tooltip="'Reload'" @click="$emit('reload-plugin')"><MiRefresh size="18" /></Button>
-            <Button v-tooltip="'Edit'" @click="editPlugin"><MiPencil size="18" /></Button>
+            <Button v-if="devmode && !plugin.packed" v-tooltip="'Edit'" @click="editPlugin"><MiPencil size="18" /></Button>
             <Button v-tooltip="'Uninstall (shift + click to unload)'" @click="$emit('delete-plugin', $event.shiftKey)" type="err"><MiDelete size="18" /></Button>
         </ButtonGroup>
     </Card>
