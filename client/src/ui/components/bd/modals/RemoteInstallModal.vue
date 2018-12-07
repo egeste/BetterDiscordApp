@@ -29,7 +29,9 @@
                 upToDate: true,
                 allowUnsafe: Settings.getSetting('security', 'default', 'unsafe-content').value,
                 installed: false,
-                err: null
+                err: null,
+                closeHandler: null,
+                closed: false
             }
         },
         props: ['modal'],
@@ -40,12 +42,21 @@
             async loadRemote() {
                 try {
                     const info = await PackageInstaller.downloadRemotePackage(this.modal.remoteLocation);
+                    if (this.closed) {
+                        PackageInstaller.clearTemp(info);
+                        return;
+                    }
                     this.modal.confirm(info.outputPath);
                     this.modal.close();
                 } catch (err) {
                     this.err = err;
                 }
             }
+        },
+        created() {
+            this.modal.on('close', this.closeHandler = force => {
+                this.closed = true;
+            });
         },
         mounted() {
             this.loadRemote();

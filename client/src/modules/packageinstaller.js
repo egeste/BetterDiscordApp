@@ -6,7 +6,7 @@ import rimraf from 'rimraf';
 
 import { request } from 'vendor';
 import { Modals } from 'ui';
-import { Utils } from 'common';
+import { Utils, FileUtils } from 'common';
 import PluginManager from './pluginmanager';
 import Globals from './globals';
 import Security from './security';
@@ -45,7 +45,7 @@ export default class PackageInstaller {
             }
 
         } catch (err) {
-            console.log(err);
+            await FileUtils.deleteFile(filePath);
         }
     }
 
@@ -158,6 +158,15 @@ export default class PackageInstaller {
 
         } catch (err) {
             throw err;
+        }
+    }
+
+    static async clearTemp(info) {
+        if (!info || !info.outputPath) return;
+        try {
+            await FileUtils.deleteFile(info.outputPath);
+        } catch (err) {
+            // Ignore
         }
     }
 
