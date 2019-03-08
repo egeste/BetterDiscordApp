@@ -12,8 +12,9 @@
     <SettingsWrapper headertext="Super Secret">
         <div class="bd-flex bd-flexCol bd-devview">
             <FormButton @click="forceUpdate">Force Update</FormButton>
-            <FormButton @click="debugConfig">Config Debug</FormButton>
+            <FormButton @click="checkForUpdates">Check for Updates</FormButton>
             <FormButton @click="testUpdateUi">Update UI Test</FormButton>
+            <FormButton @click="debugConfig">Config Debug</FormButton>
         </div>
     </SettingsWrapper>
 </template>
@@ -37,6 +38,9 @@
         methods: {
             forceUpdate() {
                 ClientIPC.send('debug-updater-forceUpdate');
+            },
+            checkForUpdates() {
+                ClientIPC.send('debug-updater-checkForUpdates');
             },
             debugConfig() {
                 console.log(Globals);
