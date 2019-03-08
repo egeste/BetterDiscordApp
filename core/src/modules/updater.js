@@ -84,8 +84,13 @@ export default class Updater extends Module {
             clearInterval(this.updaterThread);
             this.updateAll(updates);
         });
+
         ipc.on('debug-updater-forceUpdate', () => {
             this.checkForUpdates(true);
+        });
+
+        ipc.on('debug-updater-checkForUpdates', () => {
+            this.checkForUpdates();
         });
     }
 
@@ -217,7 +222,7 @@ export default class Updater extends Module {
     }
 
     async checkForUpdates(forced = false) {
-        console.log('[BetterDiscord:Updater] Checking for updates');
+        console.log('[BetterDiscord:Updater] Checking for updates', forced);
         this.bd.sendToDiscord('updater-checkForUpdates', '');
 
         try {
