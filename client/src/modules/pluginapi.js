@@ -28,6 +28,7 @@ import GlobalAc from '../ui/autocomplete';
 import Vue from 'vue';
 import path from 'path';
 import Globals from './globals';
+import { remote } from 'electron';
 
 export default class PluginApi {
 
@@ -614,6 +615,22 @@ export default class PluginApi {
 
     Vuewrap(id, component, props) {
         return VueInjector.createReactElement(Vue.component(id, component), props);
+    }
+
+    /**
+     * Adds a callback to a set of listeners for onSwitch.
+     * @param {callable} callback - basic callback to happen on channel switch
+     */
+    static addOnSwitchListener(callback) {
+        remote.getCurrentWebContents().on('did-navigate-in-page', callback);
+    }
+
+    /**
+     * Removes the listener added by {@link addOnSwitchListener}.
+     * @param {callable} callback - callback to remove from the listener list
+     */
+    static removeOnSwitchListener(callback) {
+        remote.getCurrentWebContents().removeListener('did-navigate-in-page', callback);
     }
 
 }
